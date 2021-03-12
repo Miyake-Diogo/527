@@ -1,0 +1,64 @@
+# LINKS
+https://github.com/oracle/centos2ol
+https://rockylinux.org/
+
+Slack: https://slack.k8s.io/ (canal ﻿kubernetes-docs-pt)
+Issue de tracking: https://github.com/kubernetes/website/issues/13939
+https://github.com/lmenezes/cerebro
+https://www.elastic.co/guide/en/logstash/current/input-plugins.html#input-plugins
+https://www.elastic.co/guide/en/logstash/current/filter-plugins.html
+https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html
+https://github.com/logstash-plugins/logstash-patterns-core/tree/master/patterns
+https://regex101.com/r/NbMIgJ/1
+https://aurelio.net/regex/guia/
+https://www.elastic.co/guide/en/logstash/current/output-plugins.html
+https://www.storytellingwithdata.com/books
+https://br1lib.org/book/2739588/d6a893
+
+# COMANDOS
+
+## Logging
+dnf install -y elasticsearch kibana logstash
+
+## Automation
+dpkg -i logstash-7.8.1.deb
+
+# /etc/docker/daemon.json
+{
+	"log-driver": "syslog",
+	"log-opts": {
+		"tag": "{{.Name}}",
+		"syslog-facility": "local7"
+	}
+}
+
+systemctl restart docker
+docker container rm dexter-app
+docker container run -d -p 8082:80 --name dexter-app dexter
+docker container run -p 8082:80 --name dexter-modsec -d 4linux/dexter-intranet:modsec
+http://192.168.77.30:9200/
+
+# /etc/elasticsearch/elasticsearch.yml
+network.host: 192.168.77.30
+http.port: 9200
+discovery.seed_hosts: ["192.168.77.30"]
+
+# /etc/kibana/kibana.yml
+server.port: 5601
+server.host: "192.168.77.30"
+elasticsearch.hosts: ["http://192.168.77.30:9200"]
+
+# Erro Kibana
+{"type":"log","@timestamp":"2021-02-26T01:32:57+00:00","tags":["warning","savedobjects-service"],"pid":4632,"message":"Unable to connect to Elasticsearch. Error: Request timed out"}
+
+* Resolução: Alterar o /etc/elasticsearch/elasticsearch.yml com as seguintes diretrizes:
+
+network.host : 0.0.0.0
+discovery.type: single-node
+
+--------
+
+systemctl start elasticsearch kibana
+
+docker container exec -ti dexter-modsec cat /etc/modsecurity.d/modsecurity.conf
+

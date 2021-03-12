@@ -1,0 +1,46 @@
+# LINKS
+https://www.hashicorp.com/
+https://www.hashicorp.com/products/vault
+https://www.vaultproject.io/docs/configuration/storage/consul
+https://www.vaultproject.io
+https://learn.hashicorp.com/tutorials/vault/ha-with-consul
+https://github.com/hashicorp/vault-ssh-helper
+
+# COMANDOS
+dnf install -y vault consul
+vault operator init | tee /root/vault_tokens.txt
+
+# vault.hcl
+ui = true
+vault_addr = "192.168.77.30:8200"
+api_addr = "http://192.168.77.30:8200/"
+
+storage "consul" {
+  address = "127.0.0.1:8500"
+  path    = "vault"
+}
+
+# HTTP listener
+listener "tcp" {
+  address = "192.168.77.30:8200"
+  tls_disable = 1
+}
+
+
+## VAULT CLIENT - SSH HELPER
+vim /opt/config.hcl
+
+vault_addr = "http://192.168.77.30:8200"
+ssh_mount_point = "ssh/"
+allowed_roles = "validation"
+
+egrep -i "^(permitrootlogin|challengeresponse|usepam|passwordauthentication)" /etc/ssh/sshd_config
+
+# MYSQL 
+
+vault secrets enable database
+
+vault write database/config/mysql-validation plugin_name=mysql-database-plugin allowed_roles="wordpress-db"                                        connection_url="vault:4linux@tcp(192.168.77.40:3306)/"
+
+vault write database/roles/wordpress-db creation_statements=@/etc/vault.d/mysql-statement.sql db_name=mysql-validation                             default_ttl="30m" max_ttl="1h"
+

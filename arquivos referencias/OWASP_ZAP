@@ -1,0 +1,46 @@
+# CLI
+zap.sh -version
+zap.sh -cmd -addoninstallall
+
+
+# LINKS
+http://zaproxy.org/
+https://www.zaproxy.org/download/
+https://software.opensuse.org/download.html?project=home%3Acabelo&package=owasp-zap
+https://www.zaproxy.org/docs/desktop/cmdline/
+https://www.youtube.com/watch?v=QRYzre4bf7I
+https://owasp.org/www-project-juice-shop/
+https://pwning.owasp-juice.shop/part1/ctf.html
+https://github.com/OWASP/Top10/raw/master/2017/OWASP%20Top%2010-2017%20(en).pdf
+https://cheatsheetseries.owasp.org/
+https://www.zaproxy.org/docs/desktop/addons/selenium/
+@b0rk
+
+# Juice Shop
+http://192.168.77.20:3000/
+docker container run -p 3000:3000 --name juice-shop -d bkimminich/juice-shop
+
+# INTERFACE GRÁFICA (WINDOWS)
+startx 2> /dev/null &
+DISPLAY=:0 zap.sh &> /dev/null &
+DISPLAY=:0 xrandr
+DISPLAY=:0 xrandr -s 1024x768
+kill $(ps axu | egrep 'startx|zap|X' | awk '{ if ($8 != "R+") print $2; }')
+
+python3 -m ComplexHTTPServer
+
+# SCRIPT DE BUILD
+#!/bin/bash
+
+if [ "$(curl -s localhost:8082)" ]; then
+  echo "Aplicação está Ativa :D"
+else
+  if [ ! -d "${DEXTER_PATH}" ]; then
+    git clone https://github.com/4linux/Dexter-Intranet
+  fi
+  docker image build ${DEXTER_PATH} -t dexter && \
+  docker container run -p 8082:80 --name dexter-app -d dexter && \
+  echo "[OK] Build Completo"
+fi
+
+

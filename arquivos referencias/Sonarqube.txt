@@ -1,0 +1,34 @@
+# Jenkins
+http://192.168.77.10:8080/
+
+# Container Sonar
+docker container run --name sonarqube -d -p 9000:9000 sonarqube
+docker container logs sonarqube --tail 10
+docker container start sonarqube
+
+http://192.168.77.20:9000
+
+# LINK
+https://www.veracode.com/
+https://www.microfocus.com/pt-br/products/static-code-analysis-sast/overview
+https://www.shiftleft.io/scan/
+https://security-code-scan.github.io/
+https://www.sonarsource.com/products/sonarlint/
+https://hub.docker.com/_/sonarqube/
+https://docs.sonarqube.org/latest/setup/install-server/
+https://www.keycloak.org/
+https://github.com/JanssenProject/home
+https://landscape.cncf.io
+https://digital.ai/periodic-table-of-devops-tools
+https://plugins.jenkins.io/
+https://github.com/4linux/Dexter-Intranet
+https://owasp.org/www-project-dependency-check/
+https://docs.sonarqube.org/latest/user-guide/rules/
+https://www.jenkins.io/blog/2012/03/13/why-does-jenkins-have-blue-balls/#:~:text=This%20is%20because%20historically%2C%20Japanese,be%20a%20shade%20of%20blue.&text=Jenkins%20has%20blue%20balls%20because,stop%20and%20blue%20means%20go
+https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
+https://www.jenkins.io/doc/book/pipeline/syntax/
+
+# Analysis Properties
+sonar.projectKey=dexter
+sonar.sources=$WORKSPACE/intranet
+sonar.projectVersion=$BUILD_NUMBER

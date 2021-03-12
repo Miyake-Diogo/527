@@ -1,0 +1,66 @@
+# tasks/deps.yml
+- name: Instalacao das Dependencias
+  package:
+    name: ['apache2','php','php-mysql','php-gd','mariadb-client','mariadb-server','python3-pip','python3-pymysql']
+    state: present
+  when: ansible_os_family == "Debian"
+  
+- name: Iniciando o Banco
+  systemd:
+    name: mariadb
+    enabled: yes
+    state: started #stopped #restarted
+
+# tasks/database.yml 
+- name: MySQL - Criando Database
+  mysql_db:
+    name: wordpress
+    login_unix_socket: "{{ socket_unix }}"
+    state: present
+
+- name: MySQL - Criando o Usuario
+  mysql_user:
+    name: wordpress
+    password: "{{ senha_wordpress }}"
+    priv: 'wordpress.*:ALL,GRANT'
+    login_unix_socket: "{{ socket_unix }}"
+    state: present
+  no_log: true
+
+# tasks/provision.yml
+- name: Wordpress - Download
+  get_url:
+    url: https://br.wordpress.org/latest-pt_BR.tar.gz
+    dest: /tmp/wordpress.tar.gz
+  register: wp
+
+- name: Wordpress - Descompactar
+  unarchive:
+    src: "{{ wp.dest }}"
+    dest: /var/www/html
+    remote_src: yes
+
+- name: Wordpress - WP Config
+  template:
+    src: wp-config.php
+    dest: /var/www/html/wordpress/
+  notify: apache
+
+# tasks/main.yml
+- name: Check OS System
+  fail:
+    msg: "ROLE EXECUTA APENAS EM DEBIAN"
+  when: ansible_os_family != "Debian"
+    
+- include_tasks: deps.yml
+- include_tasks: database.yml
+- include_tasks: provision.yml
+
+# handlers/main.yml
+---
+# handlers file for wordpress
+- name: apache
+  service:
+    name: apache2
+    state: restarted
+

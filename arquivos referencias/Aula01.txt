@@ -1,0 +1,43 @@
+* Yago Ésquines
+* yago.almeida@4linux.com.br
+* Linkedin: https://www.linkedin.com/in/yago-esquines/
+* itextPad: https://www.itextpad.com/5CU3HpObSI
+
+# Links
+
+https://moodle-prod.4linux.com.br
+https://github.com/4linux/527
+https://gitforwindows.org/
+https://app.vagrantup.com
+http://agilemanifesto.org/
+https://martinfowler.com/
+https://sre.google/
+https://www.youtube.com/watch?v=uTEL8Ff1Zvk
+[trunk based development & feature flag](https://martinfowler.com/articles/feature-toggles.html)
+https://www.hackthebox.eu/
+TryHackMe
+https://www.devsecops.org/
+https://git-secret.io/
+https://www.archerysec.com/
+https://www.sonatype.com/nexus/repository-pro
+https://www.defectdojo.org/
+https://github.com/hakluke/how-to-exit-vim
+
+# Ambiente Prático
+
+* Git: apt install git / yum install git 
+  - https://git-scm.com/downloads
+* Virtualbox: https://www.virtualbox.org/wiki/Downloads
+* Vagrant: https://www.vagrantup.com/downloads
+
+> Pacote Ubuntu: `sudo apt install -y libarchive-tools`
+
+```bash
+git clone https://github.com/4linux/527
+cd 527/
+vagrant status
+vagrant up testing automation --provider virtualbox
+vagrant halt testing automation
+```
+
+---

@@ -1,0 +1,52 @@
+# LINK
+https://www.cisecurity.org/cis-benchmarks/
+https://dev-sec.io/baselines/linux/
+https://code.google.com/archive/p/vimbook/
+https://www.chef.io/products/chef-inspec
+https://docs.ansible.com/ansible-tower/index.html
+https://github.com/ansible/awx
+https://www.rundeck.com/open-source
+https://docs.openstack.org/ansible-hardening/latest/
+https://github.com/openstack/ansible-hardening/tree/1890dc05206af027a22833c7147d42acda96a6fa/tasks
+https://www.open-scap.org/
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/scanning-the-system-for-configuration-compliance-and-vulnerabilities_security-hardening#configuration-compliance-scanning_scanning-the-system-for-configuration-compliance-and-vulnerabilities
+https://stackoverflow.com/questions/31534079/use-of-in-shell-script/31534141
+https://github.com/ComplianceAsCode/content
+https://www.open-scap.org/security-policies/choosing-policy/
+https://www.open-scap.org/resources/documentation/security-compliance-of-rhel7-docker-containers/
+https://goharbor.io/
+https://syspass.org/en
+https://github.com/aquasecurity/kube-bench
+https://github.com/aquasecurity/trivy
+https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html
+
+# AWX
+wget -cq https://github.com/ansible/awx/archive/17.0.1.tar.gz
+tar xf 17.0.1.tar.gz
+
+docker image pull postgres:12
+docker image pull redis
+docker image pull ansible/awx:17.0.1
+docker image pull ansible/awx
+
+ansible-playbook -i inventory install.yml
+
+curl wttr.in?lang=pt
+telnet towel.blinkenlights.nl
+
+oscap xccdf eval --profile pci-dss --report /root/report/pci_fix.html --remediate ssg-centos7-ds.xml
+
+oscap xccdf generate fix --fix-type ansible --profile pci-dss --output /root/pci.yml ssg-centos7-ds.xml
+
+oscap xccdf generate fix --fix-type bash --profile pci-dss --output /root/pci.sh ssg-centos7-ds.xml
+
+apt install -y libopenscap8
+oscap -V
+
+oscap-ssh root@192.168.77.20 22 xccdf eval --profile stig ssg-firefox-ds.xml
+
+
+
+
+
+

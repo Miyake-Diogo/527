@@ -1,0 +1,44 @@
+---
+- name: Playbook do Desafiador
+  hosts: herois
+  vars:
+    - usuario: boston
+#   - nome: valor
+  tasks:
+  - name: Instalacao de Pacotes - DEBIAN
+    apt:
+      name: ['cowsay','sl','fish']
+      update_cache: yes
+      state: present
+    when: ansible_distribution == "Debian"
+
+  - name: Escrevendo no Profile #lineinfile
+    blockinfile: 
+      path: /etc/profile
+      block: "export PATH=$PATH:/usr/games/"
+      state: present #absent
+
+  - name: Criando um usuario
+    user: #name={{ usuario }} shell=/usr/bin/fish create_home=yes
+      name: "{{ usuario }}"
+      shell: /usr/bin/fish
+      create_home: yes
+    # state: present
+
+  - name: Instalacao de Pacotes - CentOS
+    yum:
+      name: ['cowsay','fish']
+      state: present
+    when: ansible_distribution == "CentOS" #or CONDICAO
+  # - CONDICAO 2
+
+  - name: Bloqueando ICMP
+    iptables: 
+      chain: OUTPUT
+      action: insert
+      protocol: icmp
+      destination: "{{ item }}"
+      jump: DROP
+    loop:
+    - 8.8.8.8 #DNS Google (8.8.4.4)
+    - 1.1.1.1 #DNS Cloudflare (1.1.0.0)

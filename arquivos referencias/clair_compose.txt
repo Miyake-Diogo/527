@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+#docker container run -d -p 6060:6060 -v /opt/clair_config:/config --restart on-failure \
+# --link clairdb clair:latest -config=/config/config.yaml
+  clair: 
+    image: quay.io/coreos/clair:latest
+    ports:
+    - "6060:6060"
+    volumes:
+    - type: bind
+      source: /opt/clair_config/
+      target: /config
+    command: -config=/config/config.yaml
+    depends_on:
+    - clairdb
+    restart: on-failure
+
+#docker container run -d --link clair armin/clair-db:latest
+  clairdb:
+    image: arminc/clair-db:latest
+
+
+# DOCKER BENCH FOR SECURITY 
+docker run --rm --net host --pid host --userns host --cap-add audit_control \
+    -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \
+    -v /etc:/etc:ro \
+    -v /usr/bin/containerd:/usr/bin/containerd:ro \
+    -v /usr/bin/runc:/usr/bin/runc:ro \
+    -v /usr/lib/systemd:/usr/lib/systemd:ro \
+    -v /var/lib:/var/lib:ro \
+    -v /var/run/docker.sock:/var/run/docker.sock:ro \
+    --label docker_bench_security \
+    docker/docker-bench-security

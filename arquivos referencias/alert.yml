@@ -1,0 +1,26 @@
+name: ModSecurity - xxx
+type: new_term 
+index: "modsec-*"
+timeframe:
+  minutes: 1
+num_events: 5
+fields:
+- "message"
+
+alert_text_type: alert_text_only
+alert_text_args: ['request','timestamp','message','clientip','agent']
+alert_text: |
+    `ALERTA - {1} - ACESSO INDEVIDO`
+    *Pagina Acessada*: {0}
+    *IP do Atacante*: {3} :skull:
+    *Navegador*: {4}
+    *Mensagem de Log:*
+    ```
+    {2}
+    ```
+
+alert:
+  - slack
+
+slack_webhook_url: https://hooks.slack.com/services/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
+slack_channel_override: "#general"

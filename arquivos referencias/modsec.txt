@@ -1,0 +1,36 @@
+# LINKS
+https://www.packtpub.com/free-learning
+https://coreruleset.org/
+https://modsecurity.org/rules.html
+https://github.com/SpiderLabs/ModSecurity
+https://github.com/Yelp/elastalert
+
+# /opt/modsecurity/modsecurity.conf
+# SYNTAX do ModSec
+# SecRule VARIAVEL "OPERATOR" "TRANSFORMAÇÕES,AÇÕES"
+SecRule REQUEST_URI "@contains /admin.php" "id:2602,phase:1,status:403,chain,deny"
+SecRule REMOTE_ADDR "!^192.168.77.[1-4]0$"
+
+---
+
+docker container cp modsecurity.conf dexter-modsec:/etc/modsecurity.d/
+docker container exec -ti dexter-modsec ls -l /etc/modsecurity.d/
+
+# Modificação kenobi.conf
+output {
+  if [response] == "403" {
+    elasticsearch {
+      hosts => ["192.168.77.30:9200"]
+      index => "modsec-%{+YYYY.MM.dd}"
+    } 
+  }
+  else {
+    elasticsearch {
+      hosts => ["192.168.77.30:9200"]
+      index => "%{[type]}-%{+YYYY.MM.dd}"
+    }   
+  }
+  stdout { codec => rubydebug }
+}
+
+# 

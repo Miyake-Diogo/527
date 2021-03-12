@@ -1,0 +1,20 @@
+# Links
+https://www.ansible.com/blog/announcing-the-community-ansible-3.0.0-package
+https://docs.ansible.com
+https://docs.chef.io/inspec/
+https://www.chef.io/products/chef-inspec
+
+# VIM 
+:set nu
+:set tabstop=2
+:set nonindependent
+
+# Senha fora do historico
+vim /tmp/senha
+SENHA=$(cat /tmp/senha)
+rm /tmp/senha
+echo $SENHA
+ansible-vault encrypt_string -n senha_wordpress $SENHA
+unset SENHA
+
+http://192.168.77.40/wordpress/

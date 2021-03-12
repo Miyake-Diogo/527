@@ -1,0 +1,26 @@
+input {
+  file {
+    path => "/var/log/docker.log"
+    start_position => "beginning"
+  }
+}
+
+filter {
+  if [path] =~ "docker" {
+    mutate { replace => { "type" => "docker-logs" } }
+    grok {
+      pattern_definitions => { "NOME_CONTAINER" => "[\w-]++\[[0-9]++\]"  }
+      match => { "message" => "%{NOME_CONTAINER:container}: %{HTTPD_COMBINEDLOG}" }
+    }
+    date { match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ] }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["192.168.77.30:9200"]
+    index => "%{[type]}-%{+YYYY.MM.dd}"
+  }
+  stdout { codec => rubydebug }
+}
+
